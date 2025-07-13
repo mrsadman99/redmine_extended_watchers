@@ -23,9 +23,9 @@ module ExtendedWatchersControllerPatch
     scope = nil
     if params[:q].blank?
       if @project.present?
-        scope = @project.principals.assignable_watchers
+        scope = @project.principals.assignable_watchers.limit(100)
       elsif @projects.present? && @projects.size > 1
-        scope = Principal.joins(:members).where(:members => { :project_id => @projects }).assignable_watchers.distinct
+        scope = Principal.joins(:members).where(:members => { :project_id => @projects }).assignable_watchers.distinct.limit(100)
       end
     else
       scope = Principal.assignable_watchers.limit(100)
